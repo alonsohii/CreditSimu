@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+mangum
+sqlalchemy
+pg8000
+boto3
+pydantic

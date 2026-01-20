@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  build:
+    commands:
+      - cd backend/CreditSimLambda
+      - pip install -r requirements.txt -t ./package
+      - cp *.py ./package/
+      - cd package
+      - zip -r ../lambda-deployment.zip .
+artifacts:
+  files:
+    - backend/CreditSimLambda/lambda-deployment.zip
