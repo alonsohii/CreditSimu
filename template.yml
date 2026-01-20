@@ -99,7 +99,7 @@ Resources:
       MinimumCompressionSize: 1024
       BinaryMediaTypes:
         - "*/*"
-      # Optimizaciones de performance
+      # Optimizaciones
       MethodSettings:
         - ResourcePath: "/*"
           HttpMethod: "*"
@@ -207,7 +207,7 @@ Resources:
       Handler: app.handler
       Role: !GetAtt LambdaRole.Arn
       Timeout: 30
-      MemorySize: 1024  # Más memoria = más CPU = menos latency
+      MemorySize: 1024 
       CodeUri: ./backend/CreditSimLambda
       Environment:
         Variables:
