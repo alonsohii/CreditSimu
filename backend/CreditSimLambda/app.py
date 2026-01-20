@@ -14,7 +14,6 @@ class Base(DeclarativeBase):
 class Simulation(Base):
     __tablename__ = "simulations"
     id: Mapped[int] = mapped_column(primary_key=True)
-    request_id: Mapped[str] = mapped_column(unique=True)
     monto: Mapped[float]
     tasa_anual: Mapped[float]
     plazo_meses: Mapped[int]
@@ -26,7 +25,6 @@ CONNECTION_STRING = os.getenv("CONNECTION_STRING")
 engine = create_engine(CONNECTION_STRING) if CONNECTION_STRING else None
 SessionLocal = sessionmaker(bind=engine) if engine else None
 
-# Lazy imports - solo cuando se necesiten
 def get_uuid():
     import uuid
     return str(uuid.uuid4())
@@ -100,16 +98,12 @@ def simulate(request: dict):
     # Cálculo
     tabla = calculate_amortization(request["monto"], request["tasa_anual"], request["plazo_meses"])
     
-    # Generar request_id
-    request_id = get_uuid()
-    
     # Guardar
     sim_id = None
     if SessionLocal:
         try:
             db = SessionLocal()
             sim = Simulation(
-                request_id=request_id,
                 monto=request["monto"],
                 tasa_anual=request["tasa_anual"],
                 plazo_meses=request["plazo_meses"],
@@ -133,7 +127,7 @@ def simulate(request: dict):
             if sqs_client:
                 # Mensaje
                 message = {
-                    "request_id": request_id,
+                    "simulation_id": sim_id,
                     "monto": request["monto"],
                     "tasa_anual": request["tasa_anual"],
                     "plazo_meses": request["plazo_meses"],
