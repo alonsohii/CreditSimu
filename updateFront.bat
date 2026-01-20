@@ -6,7 +6,7 @@ echo ========================================
 cd /d "%~dp0\frontend"
 
 echo [1/4] Building React app...
-call npm run build
+call npx react-scripts build
 if %errorlevel% neq 0 (
     echo ERROR: Build failed
     pause

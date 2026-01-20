@@ -3,14 +3,22 @@ import { TextField, Button, Paper, Grid, InputAdornment } from '@mui/material';
 import { AttachMoney, Percent, CalendarMonth, Calculate } from '@mui/icons-material';
 import { saveFormData, getFormData } from '../utils/storage';
 
-function Form({ onSubmit, loading }) {
+function Form({ onSubmit, loading, onFormChange }) {
   const savedData = getFormData();
   const [monto, setMonto] = useState(savedData.monto);
   const [tasa, setTasa] = useState(savedData.tasa);
   const [plazo, setPlazo] = useState(savedData.plazo);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     saveFormData(monto, tasa, plazo);
+    // Solo limpiar tabla después de la carga inicial
+    if (!isInitialLoad && onFormChange) {
+      onFormChange();
+    }
+    if (isInitialLoad) {
+      setIsInitialLoad(false);
+    }
   }, [monto, tasa, plazo]);
 
   const handleSubmit = async (e) => {

@@ -28,13 +28,17 @@ function App() {
     }
   };
 
+  const handleFormChange = () => {
+    setTabla([]);
+  };
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ my: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ fontWeight: 700, color: '#1f2937' }}>
            CreditSim - Simulador de Crédito
         </Typography>
-        <Form onSubmit={handleSimulate} loading={loading} />
+        <Form onSubmit={handleSimulate} loading={loading} onFormChange={handleFormChange} />
         <Table data={tabla} />
       </Box>
     </Container>
